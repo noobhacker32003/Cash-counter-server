@@ -32,22 +32,22 @@ async function run() {
 
         // POST: Add a transaction
         app.post('/transactions', async (req, res) => {
-            const { name, type, amount, purpose } = req.body;
+           const { name, type, amount, purpose } = req.body;
 
-            if (!name || !type || !amount) {
-                return res.status(400).json({ error: "Missing required fields" });
-            }
+    if (!name || !type || !amount) {
+        return res.status(400).json({ error: "Missing required fields" });
+    }
 
-            const transaction = {
-                name,
-                type,
-                amount: parseFloat(amount),
-                purpose: purpose || "",
-                timestamp: new Date(),
-            };
+    const transaction = {
+        name,
+        type,
+        amount: parseFloat(amount),
+        purpose: purpose || "", // ✅ this must be included!
+        timestamp: new Date(),
+    };
 
-            await transactionsCollection.insertOne(transaction);
-
+    await transactionsCollection.insertOne(transaction);
+    
             const existingClient = await clientsCollection.findOne({ name });
 
             if (existingClient) {
